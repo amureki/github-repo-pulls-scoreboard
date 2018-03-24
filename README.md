@@ -2,6 +2,7 @@
 
 Chrome extension to show top PR creators and assignees in any available GitHub repository.
 
+![Scoreboard](https://pbs.twimg.com/media/DZD8BF9WAAAULvs.png "Scoreboard")
 
 ## Installation
 

@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "GitHub Repository Pull Requests Scoreboard",
+    "description": "",
+    "version": "1.0",
+    "permissions": [
+        "storage"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://github.com/*/*/pulls"
+            ],
+            "css": [
+                "css/styles.css"
+            ],
+            "js": [
+                "js/vendors/jquery-3.3.1.min.js",
+                "js/vendors/lodash.min.js",
+                "js/vendors/octokit-rest.min.js",
+                "js/options.js",
+                "js/main.js"
+            ]
+        }
+    ],
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true
+    }
+}

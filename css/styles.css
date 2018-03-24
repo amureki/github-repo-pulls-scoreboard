@@ -1,0 +1,17 @@
+.heroes {
+  display: flex;
+  list-style: none;
+  margin-left: 3em;
+}
+
+.assignees {
+  margin-left: 3em;
+}
+
+.assignees li {
+  list-style: square;
+}
+
+.authors li {
+  list-style: square;
+}

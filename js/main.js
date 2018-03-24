@@ -1,11 +1,19 @@
 const github = new Octokit();
 let githubToken;
 
+const issuesListing = $(".issues-listing");
+
 chrome.storage.sync.get({
   ghToken: '',
-}, function (data) {
+}, function(data) {
   githubToken = data.ghToken;
-  init();
+  if (githubToken) {
+    init();
+  } else {
+    issuesListing.prepend(
+        '<p class="text-gray">Add GitHub token in extension options to be able to see scoreboard.</p>'
+    );
+  }
 });
 
 function parseURL() {
@@ -53,7 +61,7 @@ function init() {
     let orderedAuthors = _.orderBy(authors, function (item) { return item.count; }).reverse();
     let orderedAssignees = _.orderBy(assignees, function (item) { return item.count; }).reverse();
 
-    $(".issues-listing").prepend(`
+    issuesListing.prepend(`
       <ul class="heroes">
         <li class="authors">
           <b>Top by opened PRs</b>

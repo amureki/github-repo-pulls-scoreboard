@@ -58,8 +58,8 @@ function init() {
       assignees.push({ 'username': username, 'count': items.length })
     });
 
-    let orderedAuthors = _.orderBy(authors, function (item) { return item.count; }).reverse();
-    let orderedAssignees = _.orderBy(assignees, function (item) { return item.count; }).reverse();
+    let orderedAuthors = _.orderBy(authors, 'count', ['desc']);
+    let orderedAssignees = _.orderBy(assignees, 'count', ['desc']);
 
     issuesListing.prepend(`
       <ul class="heroes">

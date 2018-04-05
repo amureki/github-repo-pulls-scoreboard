@@ -30,20 +30,29 @@ function init() {
   });
 
   function getOpenPRsAndRenderScore() {
-    return github.pullRequests.getAll({ owner: owner, repo: repo, per_page: 100 })
-      .then(result => { return renderRatings(result.data) })
-      .catch(e => { console.warn('Could not load PRs from github', e); throw e; });
+    return github.pullRequests.getAll({owner: owner, repo: repo, per_page: 100})
+        .then(result => {
+          return renderRatings(result.data)
+        })
+        .catch(e => {
+              if (e.status === 'Not Found') {
+                console.warn('Please, set up Github token with `repo` scope to be able to check this repository.');
+              } else {
+                console.warn('Unknown error, could not load PRs from Github:', e);
+              }
+            }
+        );
   }
 
   const renderRatings = (pullRequests) => {
     let authorsUsernames = [];
     let assigneesUsernames = [];
-    pullRequests.forEach(function (pr) {
+    pullRequests.forEach(function(pr) {
       let prAssignees = pr.assignees;
-      prAssignees.forEach(function (assignee) {
-        assigneesUsernames.push({ 'username': assignee.login });
+      prAssignees.forEach(function(assignee) {
+        assigneesUsernames.push({'username': assignee.login});
       });
-      authorsUsernames.push({ 'username': pr.user.login });
+      authorsUsernames.push({'username': pr.user.login});
     });
     authorsUsernames = _.groupBy(authorsUsernames, 'username');
     assigneesUsernames = _.groupBy(assigneesUsernames, 'username');
@@ -51,11 +60,11 @@ function init() {
     let authors = [];
     let assignees = [];
 
-    _.forEach(authorsUsernames, function (items, username) {
-      authors.push({ 'username': username, 'count': items.length })
+    _.forEach(authorsUsernames, function(items, username) {
+      authors.push({'username': username, 'count': items.length})
     });
-    _.forEach(assigneesUsernames, function (items, username) {
-      assignees.push({ 'username': username, 'count': items.length })
+    _.forEach(assigneesUsernames, function(items, username) {
+      assignees.push({'username': username, 'count': items.length})
     });
 
     let orderedAuthors = _.orderBy(authors, 'count', ['desc']);
@@ -78,10 +87,10 @@ function init() {
     const authorsLi = $("#authors");
     const assigneesLi = $("#assignees");
 
-    orderedAuthors.slice(0,5).forEach(function (author) {
+    orderedAuthors.slice(0, 5).forEach(function(author) {
       authorsLi.append("<li>" + author.username + ": " + author.count + "</li>");
     });
-    orderedAssignees.slice(0,5).forEach(function (assignee) {
+    orderedAssignees.slice(0, 5).forEach(function(assignee) {
       assigneesLi.append("<li>" + assignee.username + ": " + assignee.count + "</li>");
     });
   };
